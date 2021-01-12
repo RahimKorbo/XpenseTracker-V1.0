@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Navbar, Nav, Button, Card, CardDeck, ListGroup } from 'react-bootstrap'
 import Countup from 'react-countup'
+import { Link } from "react-router-dom";
 
 export default class HomePageContent extends Component {
 
@@ -25,6 +26,10 @@ export default class HomePageContent extends Component {
                     <Card style={{ width: '10rem', marginTop: "10px" }}>
                         <Card.Header>Dashboard</Card.Header>
                         <ListGroup variant="flush">
+                        <Link to="/makeTransactions" style={{ color: "black" }} >
+                            <ListGroup.Item>Make Transaction</ListGroup.Item>
+                        </Link>
+                            
                             <ListGroup.Item>Bills&Payments</ListGroup.Item>
                             <ListGroup.Item>Financial Goals</ListGroup.Item>
                             <ListGroup.Item>Expenses</ListGroup.Item>

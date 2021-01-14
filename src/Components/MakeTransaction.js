@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component  } from 'react'
 import { Container, Form, InputGroup, FormControl, DropdownButton, Dropdown } from 'react-bootstrap'
 import Header from './Header'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
+import DatePicker from 'react-date-picker';
 import Button from '@material-ui/core/Button';
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
@@ -15,60 +16,93 @@ export default class MakeTransaction extends Component {
         super(props);
         this.state = {
             selectedOption: options[0],// default selected value
-            city: null,
-            chkbox: false,
-            dateField: true,
-            focused: false
+            editable: {},
+            fields: {},
+            keyDate: "",
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.submitLoginForm = this.submitLoginForm.bind(this);
+
+        
     }
 
-    handleInputChange(event) {
+    // {
+    //     "amount": Integer,
+    //     "purpose": "string",
+    //     "txnDate": "string",
+    //     "txnMode": "string", // DebitCard/CreditCard/Cash -- Capital
+    //     "txnType": "string", // DEBIT/CREDIT -- Capital
+    //     "userName": "string",
+    //     "userId" : Integer
+    //   }
 
+    handleChange = (e) => {
+        // console.log("date testing++")
+        let fields = this.state.fields;
+        fields[e.target.name] = e.target.value;
+        // console.log("date testing++" + e.target.name + e.target.value)
         this.setState({
-            city: event.target.value
+          fields
         });
-
-    }
-
-    handleCheckboxChange() {
-        console.log("checkbox changed!");
-        this.setState({
-            focused: false
-           
-        });
-    }
-
-    handleChangeChk() {
-
-        alert("CHeckbox checked:"+this.state.chkbox);
-        if (this.state.chkbox){
-
-            alert("inside true condition")
-            this.setState({
-                focused: false
-               
-            });
-            this.setState({
-                
-                chkbox: false
-            });
     
-        } else {
-            this.setState({
-                
-                focused: true
-            });
+      };
+
+
+    submitLoginForm(e) {
     
-
-        }
+        e.preventDefault();
+        console.log("Form submitted");
+        this.processTransaction(e);
+   
     }
+      
+    processTransaction(e) {
 
-    submit() {
-        console.warn(this.state)
-    }
+        if (e) e.preventDefault();
+    
+        const newEntry = {
+          //Transaction Details
+
+        amount: this.refs.amount.value,
+        purpose: this.refs.purpose.value,
+        txnDate: this.state.keyDate,
+        txnMode: this.refs.txnMode.value,// DebitCard/CreditCard/Cash -- Capital
+        txnType: this.refs.txnType.value,// DEBIT/CREDIT -- Capital
+        userName: 'this.refs.userName.value',
+        userId :'this.refs.userId.value',
+         
+        };
+    
+        console.log("data-->", newEntry);
+        // addAtm(newAtm).then(res => {
+    
+        //   if (res.status === 200) {
+        //     alert(res.data);
+        //     this.setState({
+        //       data: newAtm,
+        //       isPosted: true
+        //     });
+        //   }
+        //   else {
+        //     alert("Error Occurred.")
+        //   }
+    
+    
+        // });
+    
+      }
+
+    handleEdit = id => {
+        this.setState(({ editable }) => ({
+          editable: { ...editable, [id]: !editable[id] }
+        }));
+      };
+
+      
+      onChange1 = keyDate => this.setState({ keyDate })
+
+
 
     render() {
 
@@ -89,53 +123,58 @@ export default class MakeTransaction extends Component {
 
                     <InputGroup size="sm" className="mb-3">
 
-                        Transaction Mode:  <select className="form-control" name="city" onChange={this.handleInputChange}>
-                            <option selected>Select City</option>
-                            <option value="1">city 1</option>
-                            <option value="2">city 2</option>
-                            <option value="3">city 3</option>
+                        Transaction Mode:  <select ref="txnMode" className="form-control" name="city" onChange={this.handleInputChange}>
+                            <option selected>Select Mode</option>
+                            <option value="DebitCard">DebitCard</option>
+                            <option value="CreditCard">CreditCard</option>
+                            <option value="Cash">Cash</option>
                         </select>
 
                     </InputGroup>
 
                     <InputGroup size="sm" className="mb-3">
 
-                        Transaction Type:<select className="form-control" name="city" onChange={this.handleInputChange}>
-                            <option selected>Select City</option>
-                            <option value="1">city 1</option>
-                            <option value="2">city 2</option>
-                            <option value="3">city 3</option>
+                        Transaction Type:<select ref="txnType" className="form-control" name="city" onChange={this.handleInputChange}>
+                            <option selected>Select Type</option>
+                            <option value="DEBIT">DEBIT</option>
+                            <option value="CREDIT">CREDIT</option>
                         </select>
 
                     </InputGroup>
 
                     <InputGroup size="sm" className="mb-2">
-                        <InputGroup.Prepend>
-                            <InputGroup.Text>INR</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <FormControl aria-label="Amount (to the nearest dollar)" />
-                        <InputGroup.Append>
-                            <InputGroup.Text>.00</InputGroup.Text>
-                        </InputGroup.Append>
+                    <label>Amount:</label>
+                        <input type="number" placeholder="amount"  ref="amount" maxLength="32" onKeyUp={this.handleChange} id="amount" name="amount" />
                     </InputGroup>
 
                     <InputGroup>
-                        <InputGroup.Prepend>
-                            <InputGroup.Text>Purpose</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <FormControl as="textarea" aria-label="With textarea" />
+                    <label>purpose:</label>
+                                        <input type="text" placeholder="purpose"  ref="purpose" maxLength="32" onKeyUp={this.handleChange} id="purpose" name="purpose" />
+                                      
                     </InputGroup>
 
-                    <Form.Group controlId="dob">
+                    <Form.Group controlId="txnDate">
                         <Form.Label>Transaction Date: </Form.Label>
-                         Today: <input type="checkbox" defaultChecked={this.state.chkbox} onChange={this.handleCheckboxChange} />
-                    
-                        <Form.Control type="date" name="dob" disabled={this.state.focused}  placeholder="Date of Birth" />
+                         Today: <input type="checkbox" onClick={() => this.handleEdit("txnDate")} />
+                          <DatePicker
+                                        onChange={this.onChange1}
+                                        value={this.state.keyDate}
+
+                                        id="txnDate"
+                                        name="txnDate"
+                                        dateFormat="MM/dd/yyyy"
+                                        ref="txnDate"
+                                        disabled={this.state.editable.txnDate}
+         
+                                      /> 
+                                       
+                                        {/* dateFormat="MMMM d, yyyy h:mm aa" */}
+
                     </Form.Group>
 
                     <div className="form-row">
                         <div className="col-md-12 text-center">
-                            <button type="submit" className="btn btn-primary" onClick={() => this.submit()}>Submit</button>
+                            <button type="submit" className="btn btn-primary" onClick={this.submitLoginForm} >Submit</button>
                         </div>
                     </div>
                 </div>

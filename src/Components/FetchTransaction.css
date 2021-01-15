@@ -1,0 +1,50 @@
+
+.center {
+    text-align: center;
+    border: 3px solid #3c1c94;
+    display: block;
+    width: 60%;
+    padding-bottom: 30%;
+  }
+
+ p {
+    font-size: 26px;
+ }
+  
+  body {
+    min-height: 100vh;
+    display: grid;
+    margin-left: 50px;
+  }
+
+  label {
+      margin-left: 20px;
+  }
+
+  button {
+      margin-left: 10px;
+  }
+  
+  form {
+    display: flex;
+    flex-wrap: wrap;
+   
+  }
+  
+  input {
+    border: none;
+    background: hsl(0 0% 93%);
+    border-radius: .25rem;
+    padding: .35rem 1rem;
+    
+
+  }
+  select {
+    border: none;
+    background: hsl(0 0% 93%);
+    border-radius: .25rem;
+    padding: .35rem 1rem;
+    
+
+  }
+  

@@ -29,7 +29,9 @@ export default class HomePageContent extends Component {
                         <Link to="/makeTransactions" style={{ color: "black" }} >
                             <ListGroup.Item>Make Transaction</ListGroup.Item>
                         </Link>
-                            
+                        <Link to="/fetchTransactions" style={{ color: "black" }} >
+                            <ListGroup.Item>Fetch Transaction</ListGroup.Item>
+                        </Link>
                             <ListGroup.Item>Bills&Payments</ListGroup.Item>
                             <ListGroup.Item>Financial Goals</ListGroup.Item>
                             <ListGroup.Item>Expenses</ListGroup.Item>
